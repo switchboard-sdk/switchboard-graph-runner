@@ -35,4 +35,12 @@ export class AudioEngine {
     const response = this.switchboardClient.callAction(objectUri, actionName, data);
     return response;
   }
+
+  stopEngine(engineId: string): object {
+    const objectUri = `${engineId}`;
+    const actionName = "stop";
+    const data = {};
+    const response = this.switchboardClient.callAction(objectUri, actionName, data);
+    return response;
+  }
 }
