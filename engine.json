@@ -1,0 +1,39 @@
+{
+  "type": "Switchboard.Realtime",
+  "configuration": {
+    "graph": {
+      "nodes": [
+        {
+          "id": "multiChannelToMonoNode",
+          "type": "Switchboard.MultiChannelToMono"
+        },
+        {
+          "id": "aiNode",
+          "type": "OpenAI.OpenAI"
+        },
+        {
+          "id": "monoToMultiChannelNode",
+          "type": "Switchboard.MonoToMultiChannel"
+        }
+      ],
+      "connections": [
+        {
+          "sourceNode": "inputNode",
+          "destinationNode": "multiChannelToMonoNode"
+        },
+        {
+          "sourceNode": "multiChannelToMonoNode",
+          "destinationNode": "aiNode"
+        },
+        {
+          "sourceNode": "aiNode",
+          "destinationNode": "monoToMultiChannelNode"
+        },
+        {
+          "sourceNode": "monoToMultiChannelNode",
+          "destinationNode": "outputNode"
+        }
+      ]
+    }
+  }
+}

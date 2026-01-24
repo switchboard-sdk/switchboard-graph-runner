@@ -1,10 +1,16 @@
 #include "NativeSwitchboardModule.h"
 
+// Extensions
+#include "OpenAIExtension.hpp"
+
 namespace facebook::react
 {
     NativeSwitchboardModule::NativeSwitchboardModule(std::shared_ptr<CallInvoker> jsInvoker)
         : NativeSwitchboardModuleCxxSpec(std::move(jsInvoker))
     {
+        // Load extensions
+        switchboard::extensions::openai::OpenAIExtension::load();
+
         // Set up the event callback to emit events to JavaScript
         switchboard.setEventCallback([this](const std::string &event) {
             // Emit the event to JavaScript

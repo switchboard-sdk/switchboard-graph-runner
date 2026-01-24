@@ -411,7 +411,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/SwitchboardSDK/include";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/libs/SwitchboardSDK/include",
+					"$(PROJECT_DIR)/libs/SwitchboardOpenAI/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
@@ -482,7 +485,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/libs/SwitchboardSDK/include";
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/libs/SwitchboardSDK/include",
+					"$(PROJECT_DIR)/libs/SwitchboardOpenAI/include",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,

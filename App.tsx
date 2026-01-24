@@ -10,15 +10,37 @@ import {
   View,
 } from 'react-native';
 import SwitchboardTurboModule from './specs/NativeSwitchboardModule';
+import * as engine from './engine.json';
+import { AudioEngine } from './src/services/AudioEngine';
+import { SwitchboardClient } from './src/services/SwitchboardClient';
+
+const switchboardClient = new SwitchboardClient();
+const audioEngine = new AudioEngine(switchboardClient);
 
 function App(): React.JSX.Element {
   const [value, setValue] = React.useState('');
-  const [reversedValue, setReversedValue] = React.useState('');
+  const [logText, setLogText] = React.useState('');
   const listenerSubscription = React.useRef<null | EventSubscription>(null);
 
-  const onPress = () => {
-    const revString = SwitchboardTurboModule.processCommand(value);
-    setReversedValue(revString);
+  const log = (text: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    const timeText = `[${timestamp}]`;
+    setLogText(prevLogText => prevLogText + "\n " + timeText + " " + text);
+  }
+
+  const logResult = (result: object) => {
+    const resultText = JSON.stringify(result, null, 2);
+    log(resultText);
+  }
+
+  const onInitializePress = () => {
+    const result = audioEngine.initialize();
+    logResult(result);
+    const result2 = audioEngine.createEngine(engine);
+    logResult(result2);
+    const engineId = result2.result;
+    const result3 = audioEngine.startEngine(engineId);
+    logResult(result3);
   };
 
   console.log("The app is rendering");
@@ -32,22 +54,14 @@ function App(): React.JSX.Element {
     }
   }, [])
 
-
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Text style={styles.title}>
-          Welcome to C++ Turbo Native Module Example
+          Switchboard Graph Runner
         </Text>
-        <Text>Write down here the text you want to reverse</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Write your text here"
-          onChangeText={setValue}
-          value={value}
-        />
-        <Button title="Reverse" onPress={onPress} />
-        <Text>Reversed text: {reversedValue}</Text>
+        <Button title="Initialize" onPress={onInitializePress} />
+        <Text>{logText}</Text>
       </View>
     </SafeAreaView>
   );
@@ -58,18 +72,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 20,
-  },
-  textInput: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginTop: 10,
-  },
+  }
 });
 
 export default App;
