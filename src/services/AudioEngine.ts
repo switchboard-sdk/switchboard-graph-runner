@@ -5,14 +5,17 @@ export class AudioEngine {
 
   constructor(switchboardClient: SwitchboardClient) {
     this.switchboardClient = switchboardClient;
+
+    const addEventListenerResult = this.switchboardClient.addEventListener("*", "*");
+    console.log("Added event listener result:", addEventListenerResult);
   }
 
-  initialize(): object {
+  initialize(appID: string, appSecret: string): object {
     const objectUri = "switchboard";
     const actionName = "initialize";
     const data = {
-      appID: "demo",
-      appSecret: "secret",
+      appID: appID,
+      appSecret: appSecret,
       extensions: {
         "OpenAI": {}
       }
@@ -43,4 +46,21 @@ export class AudioEngine {
     const response = this.switchboardClient.callAction(objectUri, actionName, data);
     return response;
   }
+
+  muteMicrophone(): object {
+    const objectUri = `inputNode`;
+    const key = "isMuted";
+    const value = true;
+    const response = this.switchboardClient.setValue(objectUri, key, value);
+    return response;
+  }
+
+  unmuteMicrophone(): object {
+    const objectUri = `inputNode`;
+    const key = "isMuted";
+    const value = false;
+    const response = this.switchboardClient.setValue(objectUri, key, value);
+    return response;
+  }
+
 }

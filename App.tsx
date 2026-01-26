@@ -1,19 +1,18 @@
 import React from 'react';
 import {
-  Alert,
   EventSubscription,
   Button,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import SwitchboardTurboModule from './specs/NativeSwitchboardModule';
 import * as engine from './engine.json';
 import { AudioEngine } from './src/services/AudioEngine';
 import { SwitchboardClient } from './src/services/SwitchboardClient';
+import { SWITCHBOARD_APP_ID, SWITCHBOARD_APP_SECRET } from './src/Config';
 
 const switchboardClient = new SwitchboardClient();
 const audioEngine = new AudioEngine(switchboardClient);
@@ -23,6 +22,7 @@ function App(): React.JSX.Element {
   const [logText, setLogText] = React.useState('');
   const [engineId, setEngineId] = React.useState<string | null>(null);
   const [isEngineRunning, setIsEngineRunning] = React.useState(false);
+  const [isMicMuted, setIsMicMuted] = React.useState(false);
   const listenerSubscription = React.useRef<null | EventSubscription>(null);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
@@ -56,19 +56,38 @@ function App(): React.JSX.Element {
     }
   };
 
+  const onToggleMicMutePress = () => {
+    if (isMicMuted) {
+      console.log('Unmuting microphone');
+      const result = audioEngine.unmuteMicrophone();
+      logResult(result);
+      setIsMicMuted(false);
+    } else {
+      console.log('Muting microphone');
+      const result = audioEngine.muteMicrophone();
+      logResult(result);
+      setIsMicMuted(true);
+    }
+  };
+
   console.log("The app is rendering");
 
   React.useEffect(() => {
-    listenerSubscription.current = SwitchboardTurboModule?.onEventReceived((eventJSON) => Alert.alert(`Event triggered: ${eventJSON}`));
+    listenerSubscription.current = SwitchboardTurboModule?.onEventReceived((eventJSON) => {
+      log(`Event received: ${eventJSON}`);
+    });
 
     // Initialize and create engine on app start
     log('Initializing Switchboard...');
-    const initResult = audioEngine.initialize();
+    const initResult = audioEngine.initialize(
+      SWITCHBOARD_APP_ID,
+      SWITCHBOARD_APP_SECRET
+    );
     logResult(initResult);
     log('Creating audio engine...');
-    const result2 = audioEngine.createEngine(engine);
-    logResult(result2);
-    const createdEngineId = (result2 as any).result;
+    const createEngineResult = audioEngine.createEngine(engine);
+    logResult(createEngineResult);
+    const createdEngineId = (createEngineResult as any).result;
     setEngineId(createdEngineId);
 
     return  () => {
@@ -89,10 +108,16 @@ function App(): React.JSX.Element {
         <Text style={styles.title}>
           Switchboard Graph Runner
         </Text>
-        <Button
-          title={isEngineRunning ? "Stop Engine" : "Start Engine"}
-          onPress={onToggleEnginePress}
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            title={isEngineRunning ? "Stop Engine" : "Start Engine"}
+            onPress={onToggleEnginePress}
+          />
+          <Button
+            title={isMicMuted ? "Unmute Mic" : "Mute Mic"}
+            onPress={onToggleMicMutePress}
+          />
+        </View>
       </View>
       <ScrollView
         ref={scrollViewRef}
@@ -119,6 +144,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 12,
     textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: 8,
   },
   logContainer: {
     flex: 1,

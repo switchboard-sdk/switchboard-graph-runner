@@ -1,6 +1,7 @@
 {
   "type": "Switchboard.Realtime",
   "configuration": {
+    "microphoneEnabled": true,
     "graph": {
       "nodes": [
         {
