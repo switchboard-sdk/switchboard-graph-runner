@@ -1,10 +1,28 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Switchboard Graph Runner
+
+This is a demo [**React Native**](https://reactnative.dev) project that demonstrates integration with the Switchboard SDK, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-## Step 1: Start Metro
+## Step 1: Download and Add the Switchboard SDK Libraries
+
+To use the Switchboard SDK in your React Native project, you need to download the necessary libraries and add them to your project.
+
+1. Download the latest Switchboard SDK libraries from the [Switchboard SDK Download Page](https://docs.switchboard.audio/downloads/). To run the demo audio engine you will need the following libraries:
+   - `SwitchboardSDK` for iOS
+   - `SwitchboardOpenAI` for iOS
+2. Uncompress the downloaded zip files into the `ios/libs` directory.
+
+## Step 2: Sign up for an SDK License Key
+
+To use the Switchboard SDK, you need to sign up for an SDK license key. You can sign up for a free license key on the [Switchboard SDK License Key Page](https://console.switchboard.audio/register).
+
+1. Sign up for a free account on the Switchboard Console.
+2. Modify the `src/Config.ts` file to include your SDK license key:
+
+## Step 3: Start Metro
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
 
@@ -18,11 +36,15 @@ npm start
 yarn start
 ```
 
-## Step 2: Build and run your app
+## Step 4: Build and run your app
 
 With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
 
 ### Android
+
+:::warning
+Android is not supported in this demo project yet.
+:::
 
 ```sh
 # Using npm
@@ -84,12 +106,15 @@ You've successfully run and modified your React Native App. :partying_face:
 
 # Troubleshooting
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+If you're having React Native related issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+
+If you're having Switchboard SDK related issues, please refer to the [Switchboard SDK Documentation](https://docs.switchboard.audio/).
 
 # Learn More
 
 To learn more about React Native, take a look at the following resources:
 
+- [Switchboard SDK Documentation](https://docs.switchboard.audio/) - learn more about the Switchboard SDK.
 - [React Native Website](https://reactnative.dev) - learn more about React Native.
 - [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
