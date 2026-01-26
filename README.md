@@ -42,9 +42,8 @@ With Metro running, open a new terminal window/pane from the root of your React 
 
 ### Android
 
-:::warning
-Android is not supported in this demo project yet.
-:::
+> [!WARNING]  
+> Android is not supported in this demo project yet.
 
 ```sh
 # Using npm
