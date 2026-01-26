@@ -1,4 +1,4 @@
-import { SwitchboardClient } from './SwitchboardClient';
+import { SwitchboardClient } from './switchboard-api/SwitchboardClient';
 
 export class AudioEngine {
   switchboardClient: SwitchboardClient;

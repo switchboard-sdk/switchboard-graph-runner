@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  EventSubscription,
   Button,
   SafeAreaView,
   ScrollView,
@@ -8,13 +7,14 @@ import {
   Text,
   View,
 } from 'react-native';
-import SwitchboardTurboModule from './specs/NativeSwitchboardModule';
 import * as engine from './engine.json';
-import { AudioEngine } from './src/services/AudioEngine';
-import { SwitchboardClient } from './src/services/SwitchboardClient';
+import { AudioEngine } from './src/AudioEngine';
+import { SwitchboardClient } from './src/switchboard-api/SwitchboardClient';
+import { NativeModuleRPCClient } from './src/switchboard-rn/NativeModuleRPCClient';
 import { SWITCHBOARD_APP_ID, SWITCHBOARD_APP_SECRET } from './src/Config';
 
-const switchboardClient = new SwitchboardClient();
+const rpcClient = new NativeModuleRPCClient();
+const switchboardClient = new SwitchboardClient(rpcClient);
 const audioEngine = new AudioEngine(switchboardClient);
 
 function App(): React.JSX.Element {
@@ -23,7 +23,6 @@ function App(): React.JSX.Element {
   const [engineId, setEngineId] = React.useState<string | null>(null);
   const [isEngineRunning, setIsEngineRunning] = React.useState(false);
   const [isMicMuted, setIsMicMuted] = React.useState(false);
-  const listenerSubscription = React.useRef<null | EventSubscription>(null);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
   const log = (text: string) => {
@@ -73,7 +72,8 @@ function App(): React.JSX.Element {
   console.log("The app is rendering");
 
   React.useEffect(() => {
-    listenerSubscription.current = SwitchboardTurboModule?.onEventReceived((eventJSON) => {
+    // Set up event handler through RPCClient
+    rpcClient.setEventReceivedCallback((eventJSON: string) => {
       log(`Event received: ${eventJSON}`);
     });
 
@@ -89,11 +89,6 @@ function App(): React.JSX.Element {
     logResult(createEngineResult);
     const createdEngineId = (createEngineResult as any).result;
     setEngineId(createdEngineId);
-
-    return  () => {
-      listenerSubscription.current?.remove();
-      listenerSubscription.current = null;
-    }
   }, [])
 
   React.useEffect(() => {
