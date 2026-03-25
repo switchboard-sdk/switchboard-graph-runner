@@ -11,9 +11,8 @@ This is a demo [**React Native**](https://reactnative.dev) project that demonstr
 To use the Switchboard SDK in your React Native project, you need to download the necessary libraries and add them to your project.
 
 1. Download the latest Switchboard SDK libraries from the [Switchboard SDK Download Page](https://docs.switchboard.audio/downloads/). To run the demo audio engine you will need the following libraries:
-   - `SwitchboardSDK` for iOS
-   - `SwitchboardOpenAI` for iOS
-2. Uncompress the downloaded zip files into the `ios/libs` directory.
+   - `SwitchboardSDK` and `SwitchboardOpenAI` for iOS → place them in the `ios/libs` directory.
+   - `SwitchboardSDK` and `SwitchboardOpenAI` for Android → place them in the `android/app/libs` directory.
 
 ## Step 2: Sign up for an SDK License Key
 
@@ -53,9 +52,6 @@ yarn start
 With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
 
 ### Android
-
-> [!WARNING]  
-> Android is not supported in this demo project yet.
 
 ```sh
 # Using npm
