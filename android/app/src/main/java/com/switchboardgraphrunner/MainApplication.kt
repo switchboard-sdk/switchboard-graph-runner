@@ -9,6 +9,13 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 
 class MainApplication : Application(), ReactApplication {
 
+  companion object {
+    init {
+      System.loadLibrary("appmodules")
+    }
+  }
+
+
   override val reactHost: ReactHost by lazy {
     getDefaultReactHost(
       context = applicationContext,

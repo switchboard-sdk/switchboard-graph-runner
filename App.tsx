@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   Button,
+  PermissionsAndroid,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -36,7 +38,7 @@ function App(): React.JSX.Element {
     log(resultText);
   }
 
-  const onToggleEnginePress = () => {
+  const onToggleEnginePress = async () => {
     if (!engineId) {
       log('Engine not initialized yet');
       return;
@@ -48,6 +50,15 @@ function App(): React.JSX.Element {
       logResult(result);
       setIsEngineRunning(false);
     } else {
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+        );
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          log('Microphone permission denied');
+          return;
+        }
+      }
       log('Starting engine...');
       const result = audioEngine.startEngine(engineId);
       logResult(result);
