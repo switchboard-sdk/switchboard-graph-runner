@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SwitchboardClient } from '../switchboard-api/SwitchboardClient';
 import { SBProperty } from '../types/SwitchboardTypes';
 import { PropertyControl } from './PropertyControl';
@@ -11,6 +11,7 @@ interface Props {
 
 export function NodePanel({ nodeId, client }: Props) {
   const [properties, setProperties] = React.useState<SBProperty[]>([]);
+  const [collapsed, setCollapsed] = React.useState(false);
 
   React.useEffect(() => {
     try {
@@ -24,12 +25,15 @@ export function NodePanel({ nodeId, client }: Props) {
     }
   }, [nodeId, client]);
 
-  if (properties.length === 0) return null;
+  if (properties.length === 0 || properties.every(p => p.readOnly)) return null;
 
   return (
     <View style={styles.panel}>
-      <Text style={styles.title}>{nodeId}</Text>
-      {properties.map(prop => (
+      <TouchableOpacity style={styles.header} onPress={() => setCollapsed(c => !c)}>
+        <Text style={styles.title}>{nodeId}</Text>
+        <Text style={styles.chevron}>{collapsed ? '›' : '⌄'}</Text>
+      </TouchableOpacity>
+      {!collapsed && properties.filter(p => !p.readOnly).map(prop => (
         <PropertyControl
           key={prop.name}
           nodeId={nodeId}
@@ -54,12 +58,21 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
   title: {
     fontSize: 14,
     fontWeight: '600',
     color: '#555',
-    marginBottom: 4,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+  },
+  chevron: {
+    fontSize: 18,
+    color: '#555',
   },
 });

@@ -86,7 +86,7 @@ export function PropertyControl({ nodeId, property, client }: Props) {
           <TextInput
             style={styles.numberInput}
             keyboardType="numeric"
-            value={String(value)}
+            value={property.type === 'float' ? Number(value).toFixed(2) : String(value)}
             onEndEditing={e => {
               const parsed = parseFloat(e.nativeEvent.text);
               if (!isNaN(parsed)) commit(parsed);
